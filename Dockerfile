@@ -6,10 +6,12 @@ RUN apk add --no-cache \
     sqlite-dev \
     libpq-dev \
     jpeg-dev \
+    libpng-dev \
     mysql-client \
     git \
     supervisor \
-    nginx
+    nginx \
+    oniguruma-dev
 
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
@@ -21,8 +23,6 @@ COPY composer.json composer.lock ./
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer install --no-dev --optimize-autoloader
-
-RUN php artisan optimize:clear
 
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage \
